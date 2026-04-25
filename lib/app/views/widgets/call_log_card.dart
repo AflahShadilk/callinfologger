@@ -1,9 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:callinfologger/app/controllers/call_controller.dart';
 import 'package:callinfologger/app/data/models/call_log_model.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class CallLogCard extends StatelessWidget {
@@ -18,8 +16,6 @@ class CallLogCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CallController callController = Get.find<CallController>();
-
     final Color typeColor;
     final IconData typeIcon;
     final String typeLabel;
@@ -66,7 +62,6 @@ class CallLogCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Name 
                   Row(
                     children: [
                       Expanded(
@@ -128,29 +123,10 @@ class CallLogCard extends StatelessWidget {
               ),
             ),
 
-            // Play + Delete 
+            // Delete only
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (log.recordingPath != null)
-                  Obx(() {
-                    final isThisPlaying =
-                        callController.currentPlayingId.value == log.id &&
-                            callController.isPlaying.value;
-                    return IconButton(
-                      icon: Icon(
-                        isThisPlaying
-                            ? Icons.pause_circle_filled
-                            : Icons.play_circle_filled,
-                        color: Colors.indigo,
-                        size: 34,
-                      ),
-                      onPressed: () => callController.playRecording(
-                        log.id,
-                        log.recordingPath!,
-                      ),
-                    );
-                  }),
                 if (onDelete != null)
                   IconButton(
                     icon: const Icon(

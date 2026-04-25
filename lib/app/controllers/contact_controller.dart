@@ -24,13 +24,13 @@ class ContactController extends GetxController {
   Future<void> loadContacts() async {
     isLoading.value = true;
     contacts.value = await _db.getAllContacts();
-    filteredContacts.value = contacts;
+    filteredContacts.assignAll(contacts);
     isLoading.value = false;
   }
 
   void filterContacts() {
     if (searchQuery.value.isEmpty) {
-      filteredContacts.value = contacts;
+      filteredContacts.assignAll(contacts);
     } else {
       filteredContacts.value = contacts
           .where((c) =>
@@ -56,6 +56,7 @@ class ContactController extends GetxController {
     await loadContacts();
     Get.snackbar('Success', '$name added to contacts',
         snackPosition: SnackPosition.BOTTOM);
+        
   }
 
   Future<void> updateContact(ContactModel contact) async {

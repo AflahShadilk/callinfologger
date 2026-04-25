@@ -14,61 +14,49 @@ class CallLogView extends GetView<CallController> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Call Logs'),
-        centerTitle: true,
-        actions: [
-          Obx(() => PopupMenuButton<CallType?>(
-            icon: const Icon(Icons.filter_list),
-            onSelected: (type) => filterType.value = type,
-            itemBuilder: (_) => [
-              PopupMenuItem(
-                value: null,
-                child: Row(children: [
-                  Icon(Icons.all_inclusive,
-                      color: filterType.value == null
-                          ? Colors.indigo
-                          : Colors.grey),
-                  const SizedBox(width: 8),
-                  const Text('All'),
-                ]),
-              ),
-              PopupMenuItem(
-                value: CallType.incoming,
-                child: Row(children: [
-                  Icon(Icons.call_received,
-                      color: filterType.value == CallType.incoming
-                          ? Colors.green
-                          : Colors.grey),
-                  const SizedBox(width: 8),
-                  const Text('Incoming'),
-                ]),
-              ),
-              PopupMenuItem(
-                value: CallType.outgoing,
-                child: Row(children: [
-                  Icon(Icons.call_made,
-                      color: filterType.value == CallType.outgoing
-                          ? Colors.blue
-                          : Colors.grey),
-                  const SizedBox(width: 8),
-                  const Text('Outgoing'),
-                ]),
-              ),
-              PopupMenuItem(
-                value: CallType.missed,
-                child: Row(children: [
-                  Icon(Icons.call_missed,
-                      color: filterType.value == CallType.missed
-                          ? Colors.red
-                          : Colors.grey),
-                  const SizedBox(width: 8),
-                  const Text('Missed'),
-                ]),
-              ),
-            ],
-          )),
-        ],
-      ),
+  title: const Text('Call Logs'),
+  centerTitle: true,
+  actions: [
+    PopupMenuButton<CallType?>(
+      icon: const Icon(Icons.filter_list),
+      onSelected: (type) => filterType.value = type,
+      itemBuilder: (_) => [
+        const PopupMenuItem(
+          value: null,
+          child: Row(children: [
+            Icon(Icons.all_inclusive, color: Colors.grey),
+            SizedBox(width: 8),
+            Text('All'),
+          ]),
+        ),
+        const PopupMenuItem(
+          value: CallType.incoming,
+          child: Row(children: [
+            Icon(Icons.call_received, color: Colors.green),
+            SizedBox(width: 8),
+            Text('Incoming'),
+          ]),
+        ),
+        const PopupMenuItem(
+          value: CallType.outgoing,
+          child: Row(children: [
+            Icon(Icons.call_made, color: Colors.blue),
+            SizedBox(width: 8),
+            Text('Outgoing'),
+          ]),
+        ),
+        const PopupMenuItem(
+          value: CallType.missed,
+          child: Row(children: [
+            Icon(Icons.call_missed, color: Colors.red),
+            SizedBox(width: 8),
+            Text('Missed'),
+          ]),
+        ),
+      ],
+    ),
+  ],
+),
       body: Obx(() {
         final logs = filterType.value == null
             ? controller.callLogs

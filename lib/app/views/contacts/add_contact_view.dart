@@ -121,7 +121,11 @@ class AddContactView extends GetView<ContactController> {
                             : notesCtrl.text.trim(),
                       );
                     }
-                    Get.back();
+                    nameCtrl.clear();
+                    phoneCtrl.clear();
+                    emailCtrl.clear();
+                    notesCtrl.clear();
+
                   },
                 ),
               ),
