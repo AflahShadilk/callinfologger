@@ -1,6 +1,5 @@
 import 'package:callinfologger/app/controllers/call_controller.dart';
 import 'package:callinfologger/app/controllers/contact_controller.dart';
-import 'package:callinfologger/app/data/models/call_log_model.dart';
 import 'package:callinfologger/app/routes/app_routes.dart';
 import 'package:callinfologger/app/views/calls/call_log_view.dart';
 import 'package:callinfologger/app/views/calls/record_call_view.dart';

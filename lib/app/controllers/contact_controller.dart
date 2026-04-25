@@ -1,8 +1,7 @@
 import 'package:callinfologger/app/data/database/db_helper.dart';
 import 'package:callinfologger/app/data/models/contact_model.dart';
-import 'package:contacts_service/contacts_service.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
 class ContactController extends GetxController {
@@ -74,27 +73,38 @@ class ContactController extends GetxController {
   }
 
   Future<void> importFromPhone() async {
-    final status = await Permission.contacts.request();
-    if (!status.isGranted) {
-      Get.snackbar(
-          'Permission Denied', 'Contacts permission is required to import',
+    final bool granted = await FlutterContacts.requestPermission();
+    if (!granted) {
+      Get.snackbar('Permission Denied', 'Contacts permission is required to import',
           snackPosition: SnackPosition.BOTTOM);
       return;
     }
     isLoading.value = true;
-    final phoneContacts = await ContactsService.getContacts();
-    for (final c in phoneContacts) {
-      if (c.phones != null && c.phones!.isNotEmpty) {
-        await _db.insertContact(ContactModel(
-            id: _uuid.v4(),
-            name: c.displayName ?? 'Unknown',
-            phone: c.phones!.first.value ?? '',
-            email: c.emails?.isNotEmpty == true ? c.emails!.first.value : null,
-            createdAt: DateTime.now()));
+    try {
+      final List<Contact> phoneContacts = await FlutterContacts.getContacts(
+        withProperties: true,
+        withPhoto: false,
+      );
+      for (final c in phoneContacts) {
+        if (c.phones.isNotEmpty) {
+          final String phone = c.phones.first.number.replaceAll(' ', '').replaceAll('-', '').trim();
+          if (phone.isEmpty) continue;
+          await _db.insertContact(ContactModel(
+              id: _uuid.v4(),
+              name: c.displayName.isNotEmpty ? c.displayName : 'Unknown',
+              phone: phone,
+              email: c.emails.isNotEmpty ? c.emails.first.address : null,
+              createdAt: DateTime.now()));
+        }
       }
+      await loadContacts();
+      Get.snackbar('Import Complete', 'Contacts imported from phone',
+          snackPosition: SnackPosition.BOTTOM);
+    } catch (e) {
+      Get.snackbar('Import Failed', 'Something went wrong: $e',
+          snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading.value = false;
     }
-    await loadContacts();
-    Get.snackbar('Import Complete', 'Contacts imported from phone',
-        snackPosition: SnackPosition.BOTTOM);
   }
 }
