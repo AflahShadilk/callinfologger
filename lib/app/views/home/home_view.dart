@@ -13,7 +13,7 @@ class HomeView extends StatelessWidget {
     final RxInt selectedIndex = 0.obs;
 
     final List<Widget> pages = const [
-      ContactView(),
+      ContactsView(),
       CallLogView(),
       RecordCallView(),
     ];
