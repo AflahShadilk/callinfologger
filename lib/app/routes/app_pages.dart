@@ -18,7 +18,7 @@ class AppPages {
     }),
     
     ),
-    GetPage(name: AppRoutes.contact, page: ()=>const ContactView()),
+    GetPage(name: AppRoutes.contact, page: ()=>const ContactsView()),
     GetPage(name: AppRoutes.addContact, page: ()=>const AddContactView()),
     GetPage(name: AppRoutes.contactDetails, page: ()=>const ContactDetailView()),
     GetPage(name: AppRoutes.recordCall, page: ()=>const RecordCallView()),
