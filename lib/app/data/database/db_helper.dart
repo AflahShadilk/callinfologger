@@ -42,7 +42,7 @@ class DBHelper{
       callType TEXT NOT NULL,
       calledAt TEXT NOT NULL,
       durationSeconds INTEGER NOT NULL,
-      recondingPath TEXT,
+      recordingPath TEXT,
       notes TEXT
       )
 '''
